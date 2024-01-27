@@ -5,7 +5,7 @@ mod graph_communicator;
 //use poem_openapi::OpenApiService;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    graph_communicator::get_myself().await?;
-    Ok(())
+async fn main(){
+    let result = graph_communicator::get_self().await.unwrap();
+    println!("{}", result);
 }

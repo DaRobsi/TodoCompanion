@@ -1,20 +1,14 @@
 use dotenv::dotenv;
+use graph_rs_sdk::*;
 
-pub async fn get_myself() -> Result<(), Box<dyn std::error::Error>> {
+pub async fn get_self() -> GraphResult<serde_json::value::Value> {
     dotenv().ok();
-    const URL: &str = "https://graph.microsoft.com/v1.0/me";
     let token = std::env::var("GRAPH_TOKEN").unwrap().to_string();
 
-    let client = reqwest::Client::new();
-    let resp = client
-        .get(URL)
-        .bearer_auth(token)
-        .send()
-        .await?
-        .json::<()>()
-        .await?;
+    let client = Graph::new(&token);
+    let response = client.me().get_user().send().await?;
 
-    println!("{:#?}", resp);
+    let body: serde_json::Value = response.json().await?;
 
-    Ok(())
+    Ok(body)
 }
