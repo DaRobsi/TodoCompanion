@@ -14,7 +14,7 @@ impl Api {
     }
 
     #[oai(path = "/graph/me", method = "get")]
-    async fn getting_myself(&self) -> Json<serde_json::value::Value> {
+    async fn getting_myself(&self) -> Json<serde_json::Value> {
         info!("Fetching own account...");
         Json(
             graph_communicator::get_self()

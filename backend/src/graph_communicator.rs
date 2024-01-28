@@ -1,7 +1,7 @@
 use dotenv::dotenv;
 use graph_rs_sdk::*;
 
-pub async fn get_self() -> GraphResult<serde_json::value::Value> {
+pub async fn get_self() -> GraphResult<serde_json::Value> {
     dotenv().ok();
     let token = std::env::var("GRAPH_TOKEN").unwrap().to_string();
 
