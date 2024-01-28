@@ -9,3 +9,4 @@ RUN cargo build
 
 # runs the program
 CMD cargo run
+
