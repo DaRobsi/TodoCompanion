@@ -19,7 +19,7 @@ impl Api {
         Json(
             graph_communicator::get_self()
                 .await
-                .expect("Something went wrong"),
+                .expect("Something went wrong")
         )
     }
 }

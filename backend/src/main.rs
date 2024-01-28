@@ -1,7 +1,7 @@
 mod endpoints;
 mod graph_communicator;
 
-use poem::{listener::TcpListener, EndpointExt, Route, Server};
+use poem::{listener::TcpListener, Route, Server};
 use poem_openapi::OpenApiService;
 use log::info;
 
