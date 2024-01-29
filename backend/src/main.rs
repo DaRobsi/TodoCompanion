@@ -7,15 +7,20 @@ use log::info;
 
 #[tokio::main]
 async fn main() {
+    // initialize proper logging 
     env_logger::init();
+    // create API service
     let api_service =
         OpenApiService::new(endpoints::Api, "Hello World", "1.0").server("http://localhost:3000/api");
+    // create docs
     let ui = api_service.swagger_ui();
+    // bind both to app
     let app = Route::new().nest("/api", api_service).nest("/docs", ui);
 
     // prb better to use envvar for port in TodoCompanion
     info!("Starting API service...");
-    let _ = Server::new(TcpListener::bind("127.0.0.1:3000"))
+    // run the app
+    let _ = Server::new(TcpListener::bind("0.0.0.0:3000"))
         .run(app)
         .await;
 }

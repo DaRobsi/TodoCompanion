@@ -2,11 +2,10 @@
 This is a RESTful ToDo webapp whoose backend is written in Rust and frontend is written in Sveltekit/Svelte. It will also use the GraphAPI for an integrated calendar.
 
 # Startup
-The project is at the moment started through a Dockerfile. This is not in the root directory of the repo, as it will be part of a docker-compose later.
+The project is started through the docker-compose.yaml in the root directory, from there the Dockerfiles for the respective services are executed. At the moment, this is only the Rust backend. In the root directory, a .env has to be created with `GRAPH_TOKEN` containing your token to the graph API, as this is not automated yet.
 
+After that, the container can be started:
 ```
-cd backend/
-docker build -t <image-name> .
-docker run <image-name> -p 3000
+docker-compose up
 ```
 

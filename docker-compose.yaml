@@ -1,9 +1,13 @@
-version: '3'
+version: '3.8'
+
 services:
   backend:
     hostname: "backend"
-    restart: unless-stoped
-    bulid:
+    restart: always
+    build:
       context: ./backend
       dockerfile: Dockerfile
-    
+    ports:
+      - 3000:3000    
+    environment:
+      RUST_LOG: "info"
