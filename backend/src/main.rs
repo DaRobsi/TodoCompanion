@@ -11,7 +11,7 @@ async fn main() {
     env_logger::init();
     // create API service
     let api_service =
-        OpenApiService::new(endpoints::Api, "Hello World", "1.0").server("http://localhost:3000/api");
+        OpenApiService::new(endpoints::Api, "Todo Companion", "1.0").server("http://localhost:3000/api");
     // create docs
     let ui = api_service.swagger_ui();
     // bind both to app
