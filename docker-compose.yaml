@@ -33,3 +33,13 @@ services:
     env_file:
       - ./.env
 
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    depends_on:
+      - postgres
+    env_file:
+      - ./.env
+    ports:
+      - "5050:80"
+
