@@ -15,3 +15,6 @@ Cargo.lock
 
 # environment variables
 .env
+
+# container data
+/postgres-data
