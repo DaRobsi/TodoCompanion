@@ -7,7 +7,6 @@ use poem_openapi::OpenApiService;
 use log::info;
 use dotenv::dotenv;
 use std::error::Error;
-use sqlx::{postgres, Connection};
 
 
 #[tokio::main]
@@ -16,7 +15,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     // initialize dotenv
     dotenv().ok();
-    let dbh = db_handler::DBHandler::db_init();
+    let dbh = db_handler::DBHandler::new();
     // create API service
     let api_service =
         OpenApiService::new(endpoints::Api, "Todo Companion", "1.0").server("http://localhost:3000/api");

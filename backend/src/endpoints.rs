@@ -18,8 +18,6 @@ impl Api {
 
     #[oai (path = "/db/healthcheck", method = "get")]
     async fn db_healthcheck(&self) -> Json<serde_json::Value> {
-        info!("Checking Database...");
-        let res = postgres::PgConnection::ping(&mut DBHandler::db_connection);
         Json(res)
     }
 
