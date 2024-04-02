@@ -19,12 +19,13 @@ impl Api {
         Json(payload)
     }
 
-    #[oai(path = "/db/healthcheck", method = "get")]
+    //* Healthcheck wont work with pool
+    /* #[oai(path = "/db/healthcheck", method = "get")]
     async fn db_healthcheck(&self) -> Json<serde_json::Value> {
         let res = self.lgc.db_healthcheck().await;
         let payload = res.ok().to_json().expect("Something went wrong");
         Json(payload)
-    }
+    } */
 
     // graph API endpoints
     #[oai(path = "/graph/me", method = "get")]

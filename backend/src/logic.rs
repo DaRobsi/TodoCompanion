@@ -1,19 +1,13 @@
 use log::info;
-use poem_openapi::types::ToJSON;
-use poem_openapi::{payload::{self, *}, OpenApi};
-use serde::{Deserialize, Serialize};
 use serde_json::to_string;
-use serde_json::Error;
-use sqlx::postgres::PgConnection;
-use graph_rs_sdk::GraphResult;
 
 use crate::db_handler::DBHandler;
-use crate::graph_communicator::Graph_Communicator;
+use crate::graph_communicator::GraphCommunicator;
 use crate::models::*;
 
 pub struct Logic {
     pub db_conn: DBHandler,
-    pub graph_conn: Graph_Communicator
+    pub graph_conn: GraphCommunicator
 }
 
 impl Logic {
@@ -26,7 +20,8 @@ impl Logic {
         return payload
     }
 
-    pub async fn db_healthcheck(&mut self) -> Result<String, serde_json::Error> {
+    //* Healthcheck wont work with pool
+    /* pub async fn db_healthcheck(&self) -> Result<String, serde_json::Error> {
         info!("Checking database connectivity...");
         let res = self.db_conn.ping_database().await;
         if res.is_ok() {
@@ -42,7 +37,7 @@ impl Logic {
             });
             return payload
         }
-    }
+    } */
 
     pub async fn graph_get_self(&self) -> Result<String, serde_json::Error> {
         let res = self.graph_conn.get_self().await;
