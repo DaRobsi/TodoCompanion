@@ -1,9 +1,9 @@
+use log::info;
 use sqlx::{postgres, Connection, PgConnection};
 use std::error::Error;
-use log::info;
 
 pub struct DBHandler {
-    db_connection: PgConnection
+    db_connection: PgConnection,
 }
 
 impl DBHandler {
@@ -11,14 +11,16 @@ impl DBHandler {
         // initialize database
         let db = std::env::var("DB_URL").unwrap().to_string();
         let db_conn = postgres::PgConnection::connect(db.as_str()).await?;
-        
-        Ok(DBHandler { db_connection: db_conn })
+
+        Ok(DBHandler {
+            db_connection: db_conn,
+        })
     }
 
     pub async fn ping_database(&mut self) -> Result<(), Box<dyn Error>> {
         info!("Checking Database...");
         let res = PgConnection::ping(&mut self.db_connection).await?;
-        
+
         Ok(res)
     }
 }

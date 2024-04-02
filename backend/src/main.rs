@@ -1,25 +1,24 @@
+mod db_handler;
 mod endpoints;
 mod graph_communicator;
-mod db_handler;
 
+use dotenv::dotenv;
+use log::info;
 use poem::{listener::TcpListener, Route, Server};
 use poem_openapi::OpenApiService;
-use log::info;
-use dotenv::dotenv;
 use std::error::Error;
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // initialize proper logging 
+    // initialize proper logging
     env_logger::init();
     // initialize dotenv
     dotenv().ok();
     // initialize database handler
     let dbh = db_handler::DBHandler::new().await?;
     // create API service
-    let api_service =
-        OpenApiService::new(endpoints::Api {db_conn: dbh}, "Todo Companion", "1.0").server("http://localhost:3000/api");
+    let api_service = OpenApiService::new(endpoints::Api { db_conn: dbh }, "Todo Companion", "1.0")
+        .server("http://localhost:3000/api");
     // create docs
     let ui = api_service.swagger_ui();
     // bind both to app
