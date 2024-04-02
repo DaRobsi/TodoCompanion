@@ -15,10 +15,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     // initialize dotenv
     dotenv().ok();
-    let dbh = db_handler::DBHandler::new();
+    // initialize database handler
+    let dbh = db_handler::DBHandler::new().await?;
     // create API service
     let api_service =
-        OpenApiService::new(endpoints::Api, "Todo Companion", "1.0").server("http://localhost:3000/api");
+        OpenApiService::new(endpoints::Api {db_conn: dbh}, "Todo Companion", "1.0").server("http://localhost:3000/api");
     // create docs
     let ui = api_service.swagger_ui();
     // bind both to app
