@@ -1,6 +1,7 @@
 mod db_handler;
 mod endpoints;
 mod graph_communicator;
+mod logic;
 
 use dotenv::dotenv;
 use log::info;
@@ -16,8 +17,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     // initialize database handler
     let dbh = db_handler::DBHandler::new().await?;
+    let graph_comm = graph_communicator::Graph_Communicator::new().await?;
+    let lgc = logic::Logic {db_conn: dbh, graph_conn: graph_comm};
     // create API service
-    let api_service = OpenApiService::new(endpoints::Api { db_conn: dbh }, "Todo Companion", "1.0")
+    let api_service = OpenApiService::new(endpoints::Api { lgc: lgc }, "Todo Companion", "1.0")
         .server("http://localhost:3000/api");
     // create docs
     let ui = api_service.swagger_ui();
