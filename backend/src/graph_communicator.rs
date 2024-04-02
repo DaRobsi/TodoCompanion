@@ -14,9 +14,6 @@ impl Graph_Communicator {
 
     // Return a GraphResult which on success gives a JSON
     pub async fn get_self(&self) -> GraphResult<serde_json::Value> {
-        // use token provided through the .env
-        
-
         let client = Graph::new(self.graph_token.as_str());
         let response = client.me().get_user().send().await?;
 

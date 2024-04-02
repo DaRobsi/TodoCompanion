@@ -2,6 +2,7 @@ mod db_handler;
 mod endpoints;
 mod graph_communicator;
 mod logic;
+mod models;
 
 use dotenv::dotenv;
 use log::info;
@@ -15,7 +16,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
     // initialize dotenv
     dotenv().ok();
-    // initialize database handler
+    // initialize logic with DBHandler and Graph_Communicator
     let dbh = db_handler::DBHandler::new().await?;
     let graph_comm = graph_communicator::Graph_Communicator::new().await?;
     let lgc = logic::Logic {db_conn: dbh, graph_conn: graph_comm};

@@ -9,18 +9,7 @@ use graph_rs_sdk::GraphResult;
 
 use crate::db_handler::DBHandler;
 use crate::graph_communicator::Graph_Communicator;
-
-#[derive(Serialize, Deserialize)]
-struct Message {
-    status: u16,
-    msg: String,
-}
-
-#[derive(Serialize, Deserialize)]
-struct GraphResponse {
-    status: u16,
-    resp: serde_json::Value
-}
+use crate::models::*;
 
 pub struct Logic {
     pub db_conn: DBHandler,
@@ -71,6 +60,4 @@ impl Logic {
             return payload
         }
     }
-
-
 }

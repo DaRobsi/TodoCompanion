@@ -1,9 +1,8 @@
 use log::info;
 use poem_openapi::types::ToJSON;
-use poem_openapi::{payload::{self, *}, OpenApi};
+use poem_openapi::{payload::*, OpenApi};
 
 use crate::logic::Logic;
-use crate::graph_communicator;
 
 pub struct Api {
     pub lgc: Logic,
