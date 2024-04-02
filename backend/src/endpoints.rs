@@ -21,9 +21,14 @@ pub struct Api {
 impl Api {
     // healthchecks
     #[oai(path = "/healthcheck", method = "get")]
-    async fn healthcheck(&self) -> PlainText<&'static str> {
+    async fn healthcheck(&self) -> Json<serde_json::Value> {
         info!("Healthcheck");
-        PlainText("This works!")
+        let payload = to_string(&Message {
+            status: 200,
+            msg: "This works!".to_string(),
+        });
+        let final_payload = payload.ok().to_json().expect("Something went wrong");
+        Json(final_payload)
     }
 
     #[oai(path = "/db/healthcheck", method = "get")]
