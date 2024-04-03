@@ -1,5 +1,8 @@
+use std::borrow::Borrow;
+
 use log::info;
 use serde_json::to_string;
+use sqlx::Row;
 
 use crate::db_handler::DBHandler;
 use crate::graph_communicator::GraphCommunicator;
@@ -20,25 +23,6 @@ impl Logic {
         return payload
     }
 
-    //* Healthcheck wont work with pool
-    /* pub async fn db_healthcheck(&self) -> Result<String, serde_json::Error> {
-        info!("Checking database connectivity...");
-        let res = self.db_conn.ping_database().await;
-        if res.is_ok() {
-            let payload = to_string(&Message {
-                status: 200,
-                msg: "Database is alive!".to_string(),
-            });
-            return payload
-        } else {
-            let payload = to_string(&Message {
-                status: 500,
-                msg: "Could not reach database".to_string(),
-            });
-            return payload
-        }
-    } */
-
     pub async fn graph_get_self(&self) -> Result<String, serde_json::Error> {
         let res = self.graph_conn.get_self().await;
         if res.is_ok() {
@@ -54,5 +38,30 @@ impl Logic {
             });
             return payload
         }
+    }
+
+    pub async fn db_get_all_notes(&self) -> Result<String, serde_json::Error> {
+        let res = self.db_conn.get_all_notes().await;
+        if res.is_ok() {
+            let res = res.ok().unwrap();
+            let recieved_note = to_string(&Note {
+                id: res.get("id"),
+                title: res.get("title"),
+                content: res.get("content"),
+                time_added: res.get("time_added")
+                //details: res.get("details") // TODO: Fix json impl thingy
+            });
+            let payload = to_string(&DbResponse {
+                status: 200,
+                resp: recieved_note.unwrap()
+            });
+            return payload
+        } else {
+            let payload = to_string(&Message {
+                status: 500,
+                msg: res.err().unwrap().to_string()
+            });
+            return payload
+        }       
     }
 }

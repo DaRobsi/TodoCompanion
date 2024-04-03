@@ -1,4 +1,4 @@
-use sqlx::PgPool;
+use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
 
 pub struct DBHandler {
@@ -11,16 +11,20 @@ impl DBHandler {
         let db = std::env::var("DB_URL").unwrap().to_string();
         let db_pool = PgPool::connect(db.as_str()).await?;
 
+        sqlx::migrate!("./migrations").run(&db_pool).await?;
+
         Ok(DBHandler {
             db_connection: db_pool
         })
+
     }
 
-    //* Healthcheck with ping wont work with pool
-    /*pub async fn ping_database(&mut self) -> Result<(), Box<dyn Error>> {
-        info!("Checking Database...");
-        let res = PgConnection::ping(&mut self.pg_connection).await?;
+    pub async fn get_all_notes(self) -> Result<PgRow, Box<dyn Error>>{
+        let query = "SELECT * FROM notes";
+        let sent_query = sqlx::query(query);
+        let row = sent_query.fetch_one(&self.db_connection).await?;
 
-        Ok(res)
-    } */
+        Ok(row)
+    }
+
 }
