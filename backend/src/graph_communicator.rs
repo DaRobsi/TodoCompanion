@@ -1,6 +1,7 @@
 use graph_rs_sdk::*;
 use std::error::Error;
 
+#[derive(Debug)]
 pub struct GraphCommunicator {
     graph_token: String,
 }

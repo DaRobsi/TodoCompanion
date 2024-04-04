@@ -1,6 +1,7 @@
 use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
 
+#[derive(Debug)]
 pub struct DBHandler {
     db_connection: PgPool,
 }
