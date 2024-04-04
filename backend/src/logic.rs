@@ -1,5 +1,3 @@
-use std::borrow::Borrow;
-
 use log::info;
 use serde_json::to_string;
 use sqlx::Row;
@@ -48,20 +46,20 @@ impl Logic {
                 id: res.get("id"),
                 title: res.get("title"),
                 content: res.get("content"),
-                time_added: res.get("time_added")
-                //details: res.get("details") // TODO: Fix json impl thingy
+                time_added: res.get("time_added"),
+            details: res.get("details")
             });
             let payload = to_string(&DbResponse {
                 status: 200,
                 resp: recieved_note.unwrap()
-            });
-            return payload
+            }).unwrap();
+            Ok(payload)
         } else {
             let payload = to_string(&Message {
                 status: 500,
                 msg: res.err().unwrap().to_string()
-            });
-            return payload
+            }).unwrap_err();
+            Err(payload)
         }       
     }
 }

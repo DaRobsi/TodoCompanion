@@ -19,7 +19,7 @@ impl DBHandler {
 
     }
 
-    pub async fn get_all_notes(self) -> Result<PgRow, Box<dyn Error>>{
+    pub async fn get_all_notes(&self) -> Result<PgRow, Box<dyn Error>>{
         let query = "SELECT * FROM notes";
         let sent_query = sqlx::query(query);
         let row = sent_query.fetch_one(&self.db_connection).await?;

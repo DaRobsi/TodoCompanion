@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use sqlx::Type;
 
 // API models
 #[derive(Serialize, Deserialize)]
@@ -26,10 +27,10 @@ pub struct Note {
     pub title: String,
     pub content: String,
     pub time_added: String,
-    //pub details: NoteDetails
+    pub details: NoteDetails
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Type)]
 pub struct NoteDetails {
     pub tags: Vec<String>
 }
