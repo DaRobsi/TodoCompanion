@@ -1,5 +1,6 @@
 use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
+use dotenv::dotenv;
 
 #[derive(Debug)]
 pub struct DBHandler {
@@ -8,6 +9,7 @@ pub struct DBHandler {
 
 impl DBHandler {
     pub async fn new() -> Result<DBHandler, Box<dyn Error>> {
+        dotenv().ok();
         // initialize database
         let db = std::env::var("DB_URL").unwrap().to_string();
         let db_pool = PgPool::connect(db.as_str()).await?;

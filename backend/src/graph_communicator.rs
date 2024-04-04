@@ -1,5 +1,6 @@
 use graph_rs_sdk::*;
 use std::error::Error;
+use dotenv::dotenv;
 
 #[derive(Debug)]
 pub struct GraphCommunicator {
@@ -8,6 +9,7 @@ pub struct GraphCommunicator {
 
 impl GraphCommunicator {
     pub async fn new() -> Result<GraphCommunicator, Box<dyn Error>> {
+        dotenv().ok();
         let token = std::env::var("GRAPH_TOKEN").unwrap().to_string();
 
         Ok(GraphCommunicator { graph_token: token })
