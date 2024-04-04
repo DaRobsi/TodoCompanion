@@ -2,7 +2,7 @@ use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
 
 pub struct DBHandler {
-    db_connection: PgPool
+    db_connection: PgPool,
 }
 
 impl DBHandler {
@@ -14,17 +14,15 @@ impl DBHandler {
         sqlx::migrate!("./migrations").run(&db_pool).await?;
 
         Ok(DBHandler {
-            db_connection: db_pool
+            db_connection: db_pool,
         })
-
     }
 
-    pub async fn get_all_notes(&self) -> Result<PgRow, Box<dyn Error>>{
+    pub async fn get_all_notes(&self) -> Result<PgRow, Box<dyn Error>> {
         let query = "SELECT * FROM notes";
         let sent_query = sqlx::query(query);
         let row = sent_query.fetch_one(&self.db_connection).await?;
 
         Ok(row)
     }
-
 }

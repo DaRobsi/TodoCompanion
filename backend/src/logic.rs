@@ -8,7 +8,7 @@ use crate::models::*;
 
 pub struct Logic {
     pub db_conn: DBHandler,
-    pub graph_conn: GraphCommunicator
+    pub graph_conn: GraphCommunicator,
 }
 
 impl Logic {
@@ -18,7 +18,7 @@ impl Logic {
             status: 200,
             msg: "This works!".to_string(),
         });
-        return payload
+        return payload;
     }
 
     pub async fn graph_get_self(&self) -> Result<String, serde_json::Error> {
@@ -26,15 +26,15 @@ impl Logic {
         if res.is_ok() {
             let payload = to_string(&GraphResponse {
                 status: 200,
-                resp: res.unwrap()
+                resp: res.unwrap(),
             });
-            return payload
+            return payload;
         } else {
             let payload = to_string(&GraphResponse {
                 status: 500,
-                resp: res.unwrap()
+                resp: res.unwrap(),
             });
-            return payload
+            return payload;
         }
     }
 
@@ -47,19 +47,21 @@ impl Logic {
                 title: res.get("title"),
                 content: res.get("content"),
                 time_added: res.get("time_added"),
-            details: res.get("details")
+                details: res.get("details"),
             });
             let payload = to_string(&DbResponse {
                 status: 200,
-                resp: recieved_note.unwrap()
-            }).unwrap();
+                resp: recieved_note.unwrap(),
+            })
+            .unwrap();
             Ok(payload)
         } else {
             let payload = to_string(&Message {
                 status: 500,
-                msg: res.err().unwrap().to_string()
-            }).unwrap_err();
+                msg: res.err().unwrap().to_string(),
+            })
+            .unwrap_err();
             Err(payload)
-        }       
+        }
     }
 }

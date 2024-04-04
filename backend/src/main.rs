@@ -19,7 +19,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // initialize logic with DBHandler and Graph_Communicator
     let dbh = db_handler::DBHandler::new().await?;
     let graph_comm = graph_communicator::GraphCommunicator::new().await?;
-    let lgc = logic::Logic {db_conn: dbh, graph_conn: graph_comm};
+    let lgc = logic::Logic {
+        db_conn: dbh,
+        graph_conn: graph_comm,
+    };
     // create API service
     let api_service = OpenApiService::new(endpoints::Api { lgc: lgc }, "Todo Companion", "1.0")
         .server("http://localhost:3000/api");

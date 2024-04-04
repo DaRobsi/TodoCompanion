@@ -1,6 +1,6 @@
 use log::info;
 use poem_openapi::types::ToJSON;
-use poem_openapi::{payload:: *, OpenApi};
+use poem_openapi::{payload::*, OpenApi};
 
 use crate::logic::Logic;
 

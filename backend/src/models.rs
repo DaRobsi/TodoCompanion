@@ -11,13 +11,13 @@ pub struct Message {
 #[derive(Serialize, Deserialize)]
 pub struct DbResponse {
     pub status: u16,
-    pub resp: String
+    pub resp: String,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct GraphResponse {
     pub status: u16,
-    pub resp: serde_json::Value
+    pub resp: serde_json::Value,
 }
 
 // DB models
@@ -27,10 +27,10 @@ pub struct Note {
     pub title: String,
     pub content: String,
     pub time_added: String,
-    pub details: NoteDetails
+    pub details: NoteDetails,
 }
 
 #[derive(Debug, Serialize, Deserialize, Type)]
 pub struct NoteDetails {
-    pub tags: Vec<String>
+    pub tags: Vec<String>,
 }

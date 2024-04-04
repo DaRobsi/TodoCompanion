@@ -2,14 +2,14 @@ use graph_rs_sdk::*;
 use std::error::Error;
 
 pub struct GraphCommunicator {
-    graph_token: String
+    graph_token: String,
 }
 
 impl GraphCommunicator {
     pub async fn new() -> Result<GraphCommunicator, Box<dyn Error>> {
         let token = std::env::var("GRAPH_TOKEN").unwrap().to_string();
 
-        Ok(GraphCommunicator { graph_token: token})
+        Ok(GraphCommunicator { graph_token: token })
     }
 
     // Return a GraphResult which on success gives a JSON
@@ -22,5 +22,3 @@ impl GraphCommunicator {
         Ok(body)
     }
 }
-
-
