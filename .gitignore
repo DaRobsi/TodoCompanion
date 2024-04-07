@@ -37,6 +37,7 @@ pnpm-debug.log*
 .DS_Store
 /build
 /.svelte-kit
+.svelte-kit
 /package
 !.env.example
 vite.config.js.timestamp-*
