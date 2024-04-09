@@ -2,6 +2,8 @@ use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
 use dotenv::dotenv;
 
+use crate::models::Note;
+
 #[derive(Debug)]
 pub struct DBHandler {
     db_connection: PgPool,
@@ -36,4 +38,6 @@ impl DBHandler {
 
         Ok(row)
     }
+
+    //pub async fn create_note(&self, note: &Note) -> Result<>
 }

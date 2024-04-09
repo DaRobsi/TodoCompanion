@@ -65,6 +65,7 @@ impl Logic {
                 resp: struct_of_notes.unwrap(),
             })
             .unwrap();
+
             Ok(payload)
         } else {
             let payload = to_string(&Message {
@@ -72,6 +73,7 @@ impl Logic {
                 msg: res.err().unwrap().to_string(),
             })
             .unwrap_err();
+        
             Err(payload)
         }
     }
