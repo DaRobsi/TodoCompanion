@@ -41,17 +41,28 @@ impl Logic {
     pub async fn db_get_all_notes(&self) -> Result<String, serde_json::Error> {
         let res = self.db_conn.get_all_notes().await;
         if res.is_ok() {
-            let res = res.ok().unwrap();
-            let recieved_note = to_string(&Note {
-                id: res.get("id"),
-                title: res.get("title"),
-                content: res.get("content"),
-                time_added: res.get("time_added"),
-                details: res.get("details"),
+            // get the vector out of the Result
+            let res = res.unwrap();
+            let mut vec_of_notes: Vec<String> = vec![];
+            for row in res {
+                // parse the result of the db per row
+                let recieved_note = to_string(&Note {
+                    id: row.get("id"),
+                    title: row.get("title"),
+                    content: row.get("content"),
+                    time_added: row.get("time_added"),
+                    details: row.get("details"),
+                });
+                // add to vector
+                vec_of_notes.push(recieved_note.unwrap());
+            }
+            // first stringified with SetOfNotes as it takes a Vector of Strings, then add it to a DbResponse as the payload
+            let struct_of_notes = to_string(&SetOfNotes {
+                notes: vec_of_notes
             });
             let payload = to_string(&DbResponse {
                 status: 200,
-                resp: recieved_note.unwrap(),
+                resp: struct_of_notes.unwrap(),
             })
             .unwrap();
             Ok(payload)

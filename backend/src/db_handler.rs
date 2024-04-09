@@ -21,9 +21,17 @@ impl DBHandler {
         })
     }
 
-    pub async fn get_all_notes(&self) -> Result<PgRow, Box<dyn Error>> {
+    pub async fn get_all_notes(&self) -> Result<Vec<PgRow>, Box<dyn Error>> {
         let query = "SELECT * FROM notes";
         let sent_query = sqlx::query(query);
+        let row = sent_query.fetch_all(&self.db_connection).await?;
+
+        Ok(row)
+    }
+
+    pub async fn get_note(&self, id: &String) -> Result<PgRow, Box<dyn Error>> {
+        let query = "SELECT * FROM notes WHERE id = $1";
+        let sent_query = sqlx::query(query).bind(&id);
         let row = sent_query.fetch_one(&self.db_connection).await?;
 
         Ok(row)

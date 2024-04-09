@@ -20,6 +20,11 @@ pub struct GraphResponse {
     pub resp: serde_json::Value,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct SetOfNotes {
+    pub notes: Vec<String>
+}
+
 // DB models
 #[derive(Serialize, Deserialize)]
 pub struct Note {
