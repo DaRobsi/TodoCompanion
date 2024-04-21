@@ -3,12 +3,10 @@ use serde_json::to_string;
 use sqlx::Row;
 
 use crate::db_handler::DBHandler;
-use crate::graph_communicator::GraphCommunicator;
 use crate::models::*;
 
 pub struct Logic {
     pub db_conn: DBHandler,
-    pub graph_conn: GraphCommunicator,
 }
 
 impl Logic {
@@ -19,23 +17,6 @@ impl Logic {
             msg: "This works!".to_string(),
         });
         return payload;
-    }
-
-    pub async fn graph_get_self(&self) -> Result<String, serde_json::Error> {
-        let res = self.graph_conn.get_self().await;
-        if res.is_ok() {
-            let payload = to_string(&GraphResponse {
-                status: 200,
-                resp: res.unwrap(),
-            });
-            return payload;
-        } else {
-            let payload = to_string(&GraphResponse {
-                status: 500,
-                resp: res.unwrap(),
-            });
-            return payload;
-        }
     }
 
     pub async fn db_get_all_notes(&self) -> Result<String, serde_json::Error> {

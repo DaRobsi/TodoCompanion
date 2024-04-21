@@ -17,14 +17,6 @@ impl Api {
         Json(payload)
     }
 
-    // graph API endpoints
-    #[oai(path = "/graph/me", method = "get")]
-    async fn getting_myself(&self) -> Json<serde_json::Value> {
-        let res = self.lgc.graph_get_self().await;
-        let payload = res.ok().to_json().expect("Something went wrong");
-        Json(payload)
-    }
-
     // db endpoints
     #[oai(path = "/db/notes/all", method = "get")]
     async fn get_all_notes(&self) -> Json<serde_json::Value> {

@@ -1,6 +1,5 @@
 mod db_handler;
 mod endpoints;
-mod graph_communicator;
 mod logic;
 mod models;
 
@@ -18,11 +17,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     // initialize logic with DBHandler and Graph_Communicator
     let dbh = db_handler::DBHandler::new().await?;
-    let graph_comm = graph_communicator::GraphCommunicator::new().await?;
-    info!("Initializing Logic component with {:#?} and {:#?}", &dbh, &graph_comm);
+    info!("Initializing Logic component with {:#?}", &dbh);
     let lgc = logic::Logic {
-        db_conn: dbh,
-        graph_conn: graph_comm,
+        db_conn: dbh
     };
     // create API service
     let api_service = OpenApiService::new(endpoints::Api { lgc }, "Todo Companion", "1.0")
