@@ -4,7 +4,7 @@ mod logic;
 mod models;
 
 use dotenv::dotenv;
-use log::info;
+use log::{info, warn};
 use poem::{listener::TcpListener, Route, Server};
 use poem_openapi::OpenApiService;
 use std::error::Error;
@@ -16,7 +16,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // initialize dotenv
     dotenv().ok();
     // initialize logic with DBHandler and Graph_Communicator
-    let dbh = db_handler::DBHandler::new().await?;
+    info!("Establishing db connection...");
+    let dbh = db_handler::DBHandler::new().await;
+    if dbh.is_err() {
+        warn!("DB connection could not be established!");
+    }
+    let dbh = dbh.ok().unwrap();
     info!("Initializing Logic component with {:#?}", &dbh);
     let lgc = logic::Logic {
         db_conn: dbh

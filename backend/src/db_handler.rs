@@ -1,3 +1,4 @@
+use log::info;
 use sqlx::{postgres::PgRow, PgPool};
 use std::error::Error;
 use dotenv::dotenv;
@@ -14,13 +15,19 @@ impl DBHandler {
         dotenv().ok();
         // initialize database
         let db = std::env::var("DB_URL").unwrap().to_string();
-        let db_pool = PgPool::connect(db.as_str()).await?;
+        println!("{}", &db);
+        let db_pool = PgPool::connect(db.as_str()).await;
 
-        sqlx::migrate!("./migrations").run(&db_pool).await?;
+        if db_pool.is_ok() {
+            let db_pool = db_pool.ok().unwrap();
+            sqlx::migrate!("./migrations").run(&db_pool).await?;
 
-        Ok(DBHandler {
-            db_connection: db_pool,
-        })
+            Ok(DBHandler {
+                db_connection: db_pool,
+            })
+        } else {
+            Err("DB connection could not be established".into())
+        }
     }
 
     pub async fn get_all_notes(&self) -> Result<Vec<PgRow>, Box<dyn Error>> {
