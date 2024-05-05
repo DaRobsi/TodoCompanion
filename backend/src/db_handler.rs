@@ -1,5 +1,5 @@
 use log::info;
-use sqlx::{postgres::PgRow, PgPool};
+use sqlx::{postgres::{PgRow, PgPoolOptions}, PgPool};
 use std::error::Error;
 use dotenv::dotenv;
 
@@ -15,9 +15,10 @@ impl DBHandler {
         dotenv().ok();
         // initialize database
         let db = std::env::var("DB_URL").unwrap().to_string();
-        println!("{}", &db);
-        let db_pool = PgPool::connect(db.as_str()).await;
-
+        println!("URL to database: {}", &db);
+        //let db_pool = PgPool::connect(db.as_str()).await;
+        let db_pool = PgPoolOptions::new().max_connections(5).connect(&db).await;
+            
         if db_pool.is_ok() {
             let db_pool = db_pool.ok().unwrap();
             sqlx::migrate!("./migrations").run(&db_pool).await?;
