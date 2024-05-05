@@ -3,8 +3,6 @@ use sqlx::{postgres::{PgRow, PgPoolOptions}, PgPool};
 use std::error::Error;
 use dotenv::dotenv;
 
-use crate::models::Note;
-
 #[derive(Debug)]
 pub struct DBHandler {
     db_connection: PgPool,
@@ -16,19 +14,17 @@ impl DBHandler {
         // initialize database
         let db = std::env::var("DB_URL").unwrap().to_string();
         println!("URL to database: {}", &db);
-        //let db_pool = PgPool::connect(db.as_str()).await;
-        let db_pool = PgPoolOptions::new().max_connections(5).connect(&db).await;
-            
-        if db_pool.is_ok() {
-            let db_pool = db_pool.ok().unwrap();
-            sqlx::migrate!("./migrations").run(&db_pool).await?;
-
-            Ok(DBHandler {
-                db_connection: db_pool,
-            })
-        } else {
-            Err("DB connection could not be established".into())
-        }
+        let db_pool = PgPool::connect(db.as_str()).await?;
+        /*let db_pool = PgPoolOptions::new()
+            .max_connections(5)
+            .connect(&db)
+            .await?;*/
+        info!("Connected to DB... migrating...");
+        sqlx::migrate!("./migrations").run(&db_pool).await?;
+        info!("DB migration done");
+        Ok(DBHandler {
+            db_connection: db_pool,
+        })
     }
 
     pub async fn get_all_notes(&self) -> Result<Vec<PgRow>, Box<dyn Error>> {

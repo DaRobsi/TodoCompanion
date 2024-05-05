@@ -17,11 +17,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     // initialize logic with DBHandler and Graph_Communicator
     info!("Establishing db connection...");
-    let dbh = db_handler::DBHandler::new().await;
-    if dbh.is_err() {
-        warn!("DB connection could not be established!");
-    }
-    let dbh = dbh.ok().unwrap();
+    let dbh = db_handler::DBHandler::new().await?;
     info!("Initializing Logic component with {:#?}", &dbh);
     let lgc = logic::Logic {
         db_conn: dbh
